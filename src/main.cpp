@@ -256,6 +256,21 @@ int main(int argc, char** argv) {
     std::cout << "======== Result Information ========" << std::endl;
     std::cout << "  Replication factor: " << ((double) numReplica / (double) graph.numUniqueVertices()) << std::endl;
     std::cout << "  Compute time (sec): " << (end - start) << std::endl;
+
+
+    std::ofstream metric_file;
+    auto graph_name = std::string(inputFile);
+    auto num_partitions = argv[optind + 1];
+    auto partitioner_name = "DNE";
+    auto metric_file_name = graph_name + "_" + partitioner_name + "-" + num_partitions + ".metrics";
+    metric_file.open(metric_file_name);
+    metric_file << "graph: " << graph_name << std::endl;
+    metric_file << "partitioner: " << partitioner_name << std::endl;
+    metric_file << "replication_factor: " << ((double) numReplica / (double) graph.numUniqueVertices())  << std::endl;
+    metric_file << "num_partitions: " << num_partitions << std::endl;
+    metric_file.close();
+
+
     if (VERBOSE) {
       std::cout << "    # of Replication : " << numReplica << std::endl;
       std::cout << "    # of Iterations  : " << iteration << std::endl;
